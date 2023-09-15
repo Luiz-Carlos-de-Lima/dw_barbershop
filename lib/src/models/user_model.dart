@@ -10,6 +10,14 @@ sealed class UserModel {
     required this.email,
     this.avatar,
   });
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return switch (map['profile']) {
+      'ADM' => UserModelADM.fromMap(json: map),
+      'EMPLOYEE' => UserModelEmployee.fromMap(map: map),
+      _ => throw ArgumentError('User profile not found')
+    };
+  }
 }
 
 class UserModelADM extends UserModel {
@@ -60,7 +68,7 @@ class UserModelEmployee extends UserModel {
     super.avatar,
   });
 
-  factory UserModelEmployee.fromMap(Map<String, dynamic> map) {
+  factory UserModelEmployee.fromMap({required Map<String, dynamic> map}) {
     return switch (map) {
       {
         'id': final int id,
